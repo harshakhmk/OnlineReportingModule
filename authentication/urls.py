@@ -1,13 +1,11 @@
 from django.urls import reverse, path, include
-from .views import RegisterView, VerifyUserEmail, LoginAPIView, NotificationAlertsView
-from rest_framework_simplejwt.views import (
-    TokenRefreshView,
-)
+from .views import RegisterView, VerifyEmail, LoginView,Logout
+
 
 urlpatterns = [
-    path("register/", RegisterView.as_view(), name="register"),
-    path("verify-email/", VerifyUserEmail.as_view(), name="verify-email"),
-    path("login/", LoginAPIView.as_view(), name="login"),
-    path("token/refresh/", TokenRefreshView.as_view(), name="token-refresh"),
+    path("register/", RegisterView, name="register"),
+    path("verify-email/", VerifyEmail, name="verify-email"),
+    path("login/", LoginView, name="login"),
+    path("logout/", Logout, name="logout"),
 
 ]

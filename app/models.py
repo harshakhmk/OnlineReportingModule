@@ -8,17 +8,18 @@ reservation_category = (('SC', 'SC'), ('ST','ST'),('OBC','OBC'),('OC', 'OC'))
 status_category = (('Accepted', 'Accepted'),('Pending', 'Pending'),('Rejected', 'Rejected'))
 
 class ApplicationStatus(models.Model):
-    status = models.CharField(choices=status_category,max_length=10)
+    status = models.CharField(choices=status_category,max_length=10,default="Pending")
     reason = models.TextField()
     message = models.TextField()
     apply_count = models.IntegerField(default=0)
 
 class Application(models.Model):
     application_id = models.IntegerField()
-    user = models.ForeignKey(User,on_delete=models.CASCADE)
     name = models.CharField(max_length=255)
-    DoB = models.DateField(auto_now=True)
+    DoB = models.DateField()
     Aadhar = models.CharField(max_length=16)
+    department = models.CharField(max_length=30,default = "select")
+    specialization = models.CharField(max_length=30,default = "choose")
     Passport = models.CharField(max_length=20)
     Address = models.TextField()
     gender = models.CharField(choices=gender_choices,max_length=20)
@@ -28,5 +29,4 @@ class Application(models.Model):
     Notes = models.TextField()
     application_status = models.ForeignKey(ApplicationStatus,on_delete =models.CASCADE)
     registration_no = models.IntegerField(null=True,blank=True,unique=True)
-
 

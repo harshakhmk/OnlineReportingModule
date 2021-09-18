@@ -20,7 +20,10 @@ from django.conf.urls.static import static
 from utils.exceptionhandler import *
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('',include("app.urls")),
+    path('accounts/',include("authentication.urls"))
 ]+ static(settings.MEDIA_URL,document_root = settings.MEDIA_ROOT)
+
 handler404 = error404
 handler500 = error500
 handler403 = error403
