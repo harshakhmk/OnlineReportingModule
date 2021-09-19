@@ -145,6 +145,6 @@ def pending_edit(request,id):
 
 
 def home(request):
-    if request.user.is_authenticated():
+
         return render(request,"index.html")
-    return redirect('applications')
+    #return redirect('applications')
