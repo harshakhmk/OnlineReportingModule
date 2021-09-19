@@ -99,7 +99,7 @@ def LoginView(request):
             if user is not None:  # valid user
                 auth.login(request, user)
                 messages.success(request, "You have been Loged in")
-                return redirect("/")
+                return redirect("incoming-applications")
 
         messages.info(request, "invalid username or password")
         return redirect("login")
