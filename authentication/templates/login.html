@@ -5,11 +5,26 @@
 <head>
     <meta charset="utf-8">
     <title>NITW</title>
-    <link rel="stylesheet" href="css/styles.css">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 
 <body>
+    <div>
+        {% if messages %}
+        <ul class="messages">
+            {% for msg in messages %}
+            <div class="alert alert-info alert-dismissable">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button> {{msg.message}}
+            </div>
+            {% endfor %}
+        </ul>
+        {% endif %}
+    </div>
+
+
+
     <div class="wrapper">
         <div class="title-text">
             <div class="title login">
@@ -17,7 +32,8 @@
         </div>
         <div class="form-container">
             <div class="form-inner">
-                <form action="url here" class="login" method="post">
+                <form  class="login" method="post">
+                    {% csrf_token %}
                     <div class="field">
                         <input type="email" name="email" placeholder="Email Address" required>
                     </div>
@@ -32,13 +48,20 @@
 
                     </div>
                     <div class="signup-link">
-                        Not a member? <a href="signup-page.html">Sign Up</a></div>
+                        Not a member? <a href="{% url 'register'   %}">Sign Up</a></div>
                 </form>
             </div>
         </div>
     </div>
     <!-- Below link is only for checking purposes, hence can be removed -->
     <div><a href="application-form.html">Application</a></div>
+
+    <script type="text/javascript">
+        setTimeout(function() {
+            $('.messages').fadeOut('fast');
+        }, 10000);
+        </script>
+
 
 </body>
 

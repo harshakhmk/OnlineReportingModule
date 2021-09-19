@@ -1,0 +1,5 @@
+'ApplicationForm' object has no attribute 'get'
+
+
+django.db.utils.IntegrityError: NOT NULL constraint failed: app_application.application_status_id
+delete the existing db

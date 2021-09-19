@@ -31,7 +31,7 @@ def RegisterView(request):
         form = RegisterForm(request.POST)
         if form.is_valid():
             form.save()
-            user = User.objects.get(email=form.get("email",""))
+            user = User.objects.get(email=request.POST.get("email",""))
             token = RefreshToken.for_user(user).access_token
             current_domain = get_current_site(request).domain
             relative_url = reverse("verify-email")
@@ -68,7 +68,7 @@ def VerifyEmail(request):
             user.save()
             message = "Successfully verified"
             messages.success(request, f" {message} ")
-            return
+            return redirect("/")
     except jwt.ExpiredSignatureError as e:
                 message="Activation link Expired"
 

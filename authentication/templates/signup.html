@@ -6,11 +6,26 @@
 <head>
     <meta charset="utf-8">
     <title>NITW</title>
-    <link rel="stylesheet" href="css/styles.css">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 
 <body>
+
+    <div>
+        {% if messages %}
+        <ul class="messages">
+            {% for msg in messages %}
+            <div class="alert alert-info alert-dismissable">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button> {{msg.message}}
+            </div>
+            {% endfor %}
+        </ul>
+        {% endif %}
+    </div>
+
+
     <div class="wrapper">
         <div class="title-text">
             <div class="title signup">
@@ -20,8 +35,8 @@
         <div class="form-container">
             <div class="form-inner">
 
-                <form action="#" class="signup" method="post">
-
+                <form  class="signup" method="post">
+                    {% csrf_token %}
                     <div class="field">
                         <input type="text" placeholder="Name" required autofocus>
                     </div>
@@ -49,7 +64,7 @@
                         <input onclick="check()" id="submit" type="submit" value="Sign Up">
                     </div>
                     <div class="signup-link">
-                        Have an account? <a href="login-page.html">Login</a></div>
+                        Have an account? <a href="{% url 'login' %}">Login</a></div>
                 </form>
             </div>
         </div>
@@ -72,6 +87,13 @@
                 }, 2000);
             }
         };
+
+        setTimeout(function() {
+            $('.messages').fadeOut('fast');
+        }, 10000);
+
+
+
     </script>
 
     <!-- Below link is only for checking purposes, hence can be removed -->
