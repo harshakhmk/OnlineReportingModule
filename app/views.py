@@ -22,7 +22,7 @@ def applicationsHandler(request):
                  form.save()
                  print("Application submitted successfully")
                  messages.success(request,"Your application successfully submitted")
-                 return redirect('/')   # Mention url name here
+                 return redirect('applicationStatus')   # Mention url name here
              else :
                  print(form.errors)
                  messages.error(request,"Invalid data")
@@ -54,12 +54,12 @@ def applicationStatus(request):
 
 
 
-@admin_required(login_url='accounts/login')
+@admin_required(login_url='/accounts/login')
 def application_detail(request,id):
     obj = get_object_or_404(Application, id=id)
     return render(request,"application_detail.html",{"app":obj})
 
-@admin_required(login_url='accounts/login')
+@admin_required(login_url='/accounts/login')
 def incoming_applications(request):
     if request.method == 'GET':
         accepted = Application.objects.filter(status="Accepted")
@@ -71,16 +71,16 @@ def incoming_applications(request):
         id = request.POST.get('id')
         application = get_object_or_404(Application,id=id)
         form = ApplicationStatusForm(request.POST)
-        print("form data is stored in above variable")
+        #print("form data is stored in above variable")
         if form.is_valid():
-            print("valid form in pending update")
+            #print("valid form in pending update")
 
             if request.POST.get('status','') == "Accepted":
                 reg_no = request.POST.get('registration_no')
-                print("Status accepted")
+                #print("Status accepted")
                 if Application.objects.filter(registration_no=reg_no).exists():
                     messages.error(request,f"{reg_no} Already exists")
-                    print("But registration  is already exists,try new")
+                    #print("But registration  is already exists,try new")
                     return redirect("pending_edit")
                 else:
                     application.registration_no = reg_no
@@ -88,15 +88,16 @@ def incoming_applications(request):
                     application.status = "Accepted"
                     application.save()
                     email_data = {"subject":"Your application is accepted","body":f"Application is accepted and {reg_no} is Registration Number","to_email":application.email}
-                    Util.send_email(email_data)
-                    print("Registration number updated")
+                    print(Util.send_email(email_data))
+                    #print("Registration number updated")
             elif request.POST.get('status','') == "Rejected":
                 application.reason = request.POST.get('reason','')
                 print("Rejected application, check again")
                 application.save()
                 application.status = "Rejected"
                 application.save()
-
+                email_data = {"subject":"Your application is rejected","body":f"Application is rejected and {application.reason} is reason ","to_email":application.email}
+                print(Util.send_email(email_data))
             messages.success(request,f" Your application was {application.status}")
             return redirect("incoming-applications")
         else:# invalid data
@@ -105,7 +106,7 @@ def incoming_applications(request):
             print(form.errors)
             return redirect("incoming-applications")
 
-@admin_required(login_url='accounts/login')
+@admin_required(login_url='/accounts/login')
 def pending_edit(request,id):
     application = get_object_or_404(Application,id=id)
     form = ApplicationStatusForm()
@@ -148,3 +149,7 @@ def home(request):
 
         return render(request,"index.html")
     #return redirect('applications')
+
+def index(request):
+
+        return render(request, "index.html")

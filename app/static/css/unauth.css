@@ -1,0 +1,19 @@
+.container{
+    align-items: center;
+    /* margin-top: 10em;
+    margin-bottom: 10em;
+    margin-left: 50em; */
+    background: url('https://www.nitandhra.ac.in/faculty/assets/images/wsdc_logo.png');
+    background-size: 30vw;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+  #head{
+    margin-top: 9em;
+    margin-bottom: 1em;
+    margin-left:10.5em;
+    font-weight: bold;
+  }
+  #two{
+    margin-left:27em;
+  }
