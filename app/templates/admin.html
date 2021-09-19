@@ -35,7 +35,7 @@
                     <h2>Accepted List</h2>
 
                     <div class="section-list">
-                        {% for acc in accepted %}
+                        {% for acc in pending %}
                         <div>
                           <a href="{% url  'application_detail' acc.id %}" target="_blank">{{acc.applicationId}}</a>
 

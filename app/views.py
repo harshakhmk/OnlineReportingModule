@@ -62,7 +62,7 @@ def application_detail(request,id):
 def incoming_applications(request):
     accepted = Application.objects.filter(status="Accepted")
     rejected = Application.objects.filter(status="Rejected")
-    pending = Application.objects.filter(status="pending")
+    pending = Application.objects.filter(status="Pending")
     return render(request,"admin.html",{'accepted':accepted, 'rejected':rejected, 'pending':pending})
 
 @admin_required(login_url='accounts/login')
