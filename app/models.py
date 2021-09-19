@@ -28,3 +28,6 @@ class Application(models.Model):
     message = models.TextField(null=True,blank=True)
     registration_no = models.IntegerField(null=True,blank=True,unique=True)
 
+    def __str__(self):
+        return str(self.applicationId)
+

@@ -35,7 +35,7 @@
         <div class="form-container">
             <div class="form-inner">
 
-                <form  class="signup" method="post">
+                <form  class="signup" method="POST">
                     {% csrf_token %}
                     <div class="field">
                         <input type="text" placeholder="Name" required autofocus>
@@ -98,7 +98,7 @@
 
     <!-- Below link is only for checking purposes, hence can be removed -->
 
-    <div><a href="application-form.html">Application</a></div>
+    <div><a href="{% url 'application' %}">Application</a></div>
 </body>
 
 </html>

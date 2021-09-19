@@ -8,6 +8,18 @@
 </head>
 <body>
 <h1>Find out application status here</h1>
+<div>
+    {% if messages %}
+    <ul class="messages">
+        {% for msg in messages %}
+        <div class="alert alert-info alert-dismissable">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button> {{msg.message}}
+        </div>
+        {% endfor %}
+    </ul>
+    {% endif %}
+</div>
+
 <form method="GET">
     <label for="app">Application Status</label>
     <input id = "app"  name="applicationId" placeholder="Place your applicationId">
@@ -16,5 +28,12 @@
 
 <br><br>
 <h1>{{message}}</h1>
+
+<script>
+    setTimeout(function() {
+            $('.messages').fadeOut('fast');
+        }, 10000);
+</script>
+
 </body>
 </html>

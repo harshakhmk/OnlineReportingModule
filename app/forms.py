@@ -16,7 +16,7 @@ class ApplicationForm(forms.ModelForm):
 
 
 class ApplicationStatusForm(forms.ModelForm):
-    registration_no = forms.IntegerField()
+    registration_no = forms.IntegerField(required=False)
     class Meta:
         model = Application
-        fields = ('status','reason','message','registration_no')
+        fields = ('status','reason','registration_no')

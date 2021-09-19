@@ -35,11 +35,12 @@
                     <h2>Accepted List</h2>
 
                     <div class="section-list">
-                        {% for acc in pending %}
+                        {% for acc in accepted %}
                         <div>
                           <a href="{% url  'application_detail' acc.id %}" target="_blank">{{acc.applicationId}}</a>
 
                         </div>
+
                         {% endfor %}
                     </div>
 
@@ -50,30 +51,76 @@
                     <h2>Pending List</h2>
 
                     <div class="section-list-pending">
-                        {% for acc in accepted %}
+                        {% for acc in pending %}
                         <div>
-                            <a href="{% url 'pending_edit' acc.id %}" target="_blank" id="pending-application-btn" class="pending-application-btn">Edit the Application No: 1234</a>
+                            <a href="{% url 'pending_edit' acc.id %}" target="_blank" id="pending-application-btn" class="pending-application-btn"> {{acc.applicationId}} </a>
                         </div>
+                        <div id="myModal" class="modal">
+
+                            <div class="modal-content">
+
+                                <span class="close">&times;</span>
+
+                                <button class="accept-btn modal-btn" id="accept-btn">Accept</button>
+                                <div id="reg-num-input" class="modal-div">
+                                    <form action="" method="POST">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="status" value="Accepted">
+                                    <input type="number" placeholder="Registration Number" class="modal-input" name="registration_no">
+                                    <input type="hidden" name="reason" placeholder="Reason for Accepting" class="modal-input" >
+                                    <input type="hidden" name="id" value={{acc.id}}>
+                                    <input type="submit" class="modal-btn">
+                                    </form>
+                                </div>
+
+                                <button class="reject-btn modal-btn" id="reject-btn">Reject</button>
+                                <div id="rej-reason-input" class="modal-div">
+                                    <form action="" method="POST">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="status" value="Rejected" >
+                                    <input type="text" name="reason" placeholder="Reason for Rejection" class="modal-input" >
+                                    <input type="hidden" name="id" value={{acc.id}}>
+                                    <input type="submit" class="modal-btn">
+                                </form>
+                                </div>
+
+
+                            </div>
+
+                        </div>
+
                         {% endfor %}
                     </div>
 
-                    <!-- this below commented code should render in the redirected page -->
+<!--
 
-                    <!-- <div id="myModal" class="modal">
+                     <div id="myModal" class="modal">
                         <div class="modal-content">
                             <span class="close">&times;</span>
                             <button class="accept-btn modal-btn" id="accept-btn">Accept</button>
                             <div id="reg-num-input" class="modal-div">
-                                <input type="number" placeholder="Registration Number" class="modal-input" name="registration-number">
+                                <form action="" method="POST">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="status" value="Accepted">
+                                    <input type="hidden" name="reason" value="good" >
+
+                                <input type="number" placeholder="Registration Number" class="modal-input" name="registration_no">
                                 <input type="submit" class="modal-btn">
+                            </form>
                             </div>
                             <button class="reject-btn modal-btn" id="reject-btn">Reject</button>
                             <div id="rej-reason-input" class="modal-div">
-                                <input type="text" name="reject-reason" placeholder="Reason for Rejection" class="modal-input" name="reject-reason">
+                                <form  method="POST">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="status" value="Rejected" >
+                                <input type="text" name="reason" placeholder="Reason for Rejection" class="modal-input" name="reason">
                                 <input type="submit" class="modal-btn">
+                            </form>
                             </div>
                         </div>
-                        </div> -->
+
+                    </div>
+                -->
                 </section>
 
                 <section class="section rejected-section">

@@ -1,5 +1,6 @@
 from django.shortcuts import render,redirect,get_list_or_404, get_object_or_404
 from .models import Application
+from authentication.models import User
 # Create your views here.
 from django.contrib import messages
 from .forms import ApplicationForm,ApplicationStatusForm
@@ -60,10 +61,49 @@ def application_detail(request,id):
 
 @admin_required(login_url='accounts/login')
 def incoming_applications(request):
-    accepted = Application.objects.filter(status="Accepted")
-    rejected = Application.objects.filter(status="Rejected")
-    pending = Application.objects.filter(status="Pending")
-    return render(request,"admin.html",{'accepted':accepted, 'rejected':rejected, 'pending':pending})
+    if request.method == 'GET':
+        accepted = Application.objects.filter(status="Accepted")
+        rejected = Application.objects.filter(status="Rejected")
+        pending = Application.objects.filter(status="Pending")
+        return render(request,"admin.html",{'accepted':accepted, 'rejected':rejected, 'pending':pending})
+    elif request.method == 'POST':
+
+        id = request.POST.get('id')
+        application = get_object_or_404(Application,id=id)
+        form = ApplicationStatusForm(request.POST)
+        print("form data is stored in above variable")
+        if form.is_valid():
+            print("valid form in pending update")
+
+            if request.POST.get('status','') == "Accepted":
+                reg_no = request.POST.get('registration_no')
+                print("Status accepted")
+                if Application.objects.filter(registration_no=reg_no).exists():
+                    messages.error(request,f"{reg_no} Already exists")
+                    print("But registration  is already exists,try new")
+                    return redirect("pending_edit")
+                else:
+                    application.registration_no = reg_no
+                    application.save()
+                    application.status = "Accepted"
+                    application.save()
+                    email_data = {"subject":"Your application is accepted","body":f"Application is accepted and {reg_no} is Registration Number","to_email":"kharshakashyap@gmail.com"}
+                    Util.send_email(email_data)
+                    print("Registration number updated")
+            elif request.POST.get('status','') == "Rejected":
+                application.reason = request.POST.get('reason','')
+                print("Rejected application, check again")
+                application.save()
+                application.status = "Rejected"
+                application.save()
+
+            messages.success(request,f" Your application was {application.status}")
+            return redirect("incoming-applications")
+        else:# invalid data
+            messages.error(request,"Error in data")
+            print("Errors in your data")
+            print(form.errors)
+            return redirect("incoming-applications")
 
 @admin_required(login_url='accounts/login')
 def pending_edit(request,id):
@@ -71,25 +111,40 @@ def pending_edit(request,id):
     form = ApplicationStatusForm()
     if request.method == 'GET':
         return render(request, 'admin.html')
-    if request.method == 'POST':
-        form = ApplicationStatusForm(request.POST or None)
+    elif request.method == 'POST':
+        form = ApplicationStatusForm(request.POST)
+        print("form data is stored in above variable")
         if form.is_valid():
+            print("valid form in pending update")
 
             if request.POST.get('status','') == "Accepted":
                 reg_no = request.POST.get('registration_no')
+                print("Status accepted")
                 if Application.objects.filter(registration_no=reg_no).exists():
                     messages.error(request,f"{reg_no} Already exists")
+                    print("But registration  is already exists,try new")
                     return redirect("pending_edit")
                 else:
                     application.registration_no = reg_no
                     email_data = {"subject":"Your application is accepted","body":f"Application is accepted and {reg_no} is Registration Number","to_email":"kharshakashyap@gmail.com"}
                     Util.send_email(email_data)
+                    print("Registration number updated")
+            elif request.POST.get('status','') == "Rejected":
+                application.reason = request.POST.get('reason','')
+                print("Rejected application, check again")
             application.save()
             messages.success(request,f" Your application was {application.status}")
             return redirect("incoming-applications")
         else:# invalid data
             messages.error(request,"Error in data")
+            print("Errors in your data")
             return redirect("incoming-applications")
 
     else: # GET method
         return render(request,"admin.html",{'form':form})
+
+
+def home(request):
+    if request.user.is_authenticated():
+        return render(request,"index.html")
+    return redirect('applications')
