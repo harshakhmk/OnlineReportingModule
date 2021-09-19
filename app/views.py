@@ -87,7 +87,7 @@ def incoming_applications(request):
                     application.save()
                     application.status = "Accepted"
                     application.save()
-                    email_data = {"subject":"Your application is accepted","body":f"Application is accepted and {reg_no} is Registration Number","to_email":"kharshakashyap@gmail.com"}
+                    email_data = {"subject":"Your application is accepted","body":f"Application is accepted and {reg_no} is Registration Number","to_email":application.email}
                     Util.send_email(email_data)
                     print("Registration number updated")
             elif request.POST.get('status','') == "Rejected":
@@ -126,7 +126,7 @@ def pending_edit(request,id):
                     return redirect("pending_edit")
                 else:
                     application.registration_no = reg_no
-                    email_data = {"subject":"Your application is accepted","body":f"Application is accepted and {reg_no} is Registration Number","to_email":"kharshakashyap@gmail.com"}
+                    email_data = {"subject":"Your application is accepted","body":f"Application is accepted and {reg_no} is Registration Number","to_email":application.email}
                     Util.send_email(email_data)
                     print("Registration number updated")
             elif request.POST.get('status','') == "Rejected":
