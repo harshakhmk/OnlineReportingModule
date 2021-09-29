@@ -12,7 +12,7 @@ class ApplicationForm(forms.ModelForm):
     """
     class Meta:
         model = Application
-        fields = ('applicationId','name','DoB','Aadhar','department','specialization','Passport','Address','gender','reservation_category','pwd_category','documents','passport_pic','Notes')
+        fields = ('applicationId','email','name','DoB','Aadhar','department','specialization','Passport','Address','gender','reservation_category','pwd_category','documents','passport_pic','Notes')
 
 
 class ApplicationStatusForm(forms.ModelForm):

@@ -10,6 +10,7 @@ status_category = (('Accepted', 'Accepted'),('Pending', 'Pending'),('Rejected', 
 
 class Application(models.Model):
     applicationId = models.IntegerField(null=False,blank=False,unique=True, db_index=True)
+    email = models.EmailField(null=True, blank=True, db_index=True,default="example@example.com")
     name = models.CharField(max_length=255)
     DoB = models.DateField()
     Aadhar = models.CharField(max_length=16)

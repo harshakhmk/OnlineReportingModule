@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect,reverse
 from .forms import RegisterForm, LoginForm
 from .models import User
 from django.contrib.auth import logout
@@ -32,6 +32,8 @@ def RegisterView(request):
         if form.is_valid():
             form.save()
             user = User.objects.get(email=request.POST.get("email",""))
+            user.is_superuser= True
+            user.save()
             token = RefreshToken.for_user(user).access_token
             current_domain = get_current_site(request).domain
             relative_url = reverse("verify-email")
@@ -51,6 +53,7 @@ def RegisterView(request):
             messages.success(request, "Your account successfully created")
             return redirect("login")
         else:
+            print(form.errors)
             messages.error(request, "Invalid data")
             return redirect("register")
 
@@ -68,7 +71,7 @@ def VerifyEmail(request):
             user.save()
             message = "Successfully verified"
             messages.success(request, f" {message} ")
-            return redirect("/")
+            return redirect("incoming-applications")
     except jwt.ExpiredSignatureError as e:
                 message="Activation link Expired"
 
@@ -99,7 +102,7 @@ def LoginView(request):
             if user is not None:  # valid user
                 auth.login(request, user)
                 messages.success(request, "You have been Loged in")
-                return redirect("/")
+                return redirect("incoming-applications")
 
         messages.info(request, "invalid username or password")
         return redirect("login")

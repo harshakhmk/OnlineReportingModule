@@ -6,7 +6,7 @@ urlpatterns = [
     path('applications/',applicationsHandler,name='applications'),
     path('application-status/',applicationStatus,name='applicationStatus'),
     path('application_detail/<int:id>/',application_detail,name='application_detail'),
-    #path('/',home,name="home"),
+    path('',index,name="home"),
     # Admin View
 
     path('incoming-applications/',incoming_applications,name='incoming-applications'),

@@ -15,13 +15,19 @@
 
     <div>
         {% if messages %}
-        <ul class="messages">
+
+        <div class="msg-div" id="msg-div">
             {% for msg in messages %}
-            <div class="alert alert-info alert-dismissable">
-                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button> {{msg.message}}
+
+            <span class="close" id="close">&times;</span>
+
+            <div class="status-msg">
+                {{msg.message}}
             </div>
-            {% endfor %}
-        </ul>
+
+            <br> {% endfor %}
+        </div>
+
         {% endif %}
     </div>
 
@@ -38,24 +44,24 @@
                 <form  class="signup" method="POST">
                     {% csrf_token %}
                     <div class="field">
-                        <input type="text" placeholder="Name" required autofocus>
+                        <input type="text" name="fullname" placeholder="Name" required autofocus>
                     </div>
 
                     <div class="field">
-                        <input type="text" placeholder="Username" required>
+                        <input type="text" name= "username" placeholder="Username" required>
                     </div>
 
                     <div class="field">
-                        <input type="email" placeholder="Email Address" required>
+                        <input type="email"  name="email" placeholder="Email Address" required>
                     </div>
 
                     <div class="field">
-                        <input type="password" id="password" placeholder="Password" required>
+                        <input type="password" id="password" name="password1" placeholder="Password" required>
                         <p id="donotmatch" class="donotmatchtext" style="font-size:1rem"></p>
                     </div>
 
                     <div class="field">
-                        <input type="password" id="passwordConfirm" placeholder="Confirm password" required>
+                        <input type="password" name="password2"id="passwordConfirm" placeholder="Confirm password" required>
                     </div>
 
                     <div class="field btn">
@@ -92,13 +98,25 @@
             $('.messages').fadeOut('fast');
         }, 10000);
 
+        setTimeout(function() {
+            $('.messages').fadeOut('fast');
+        }, 10000);
+
+        var close = document.getElementById("close");
+
+        close.onclick = function() {
+            document.getElementById("msg-div").style.display = "none";
+        }
+
+
 
 
     </script>
 
-    <!-- Below link is only for checking purposes, hence can be removed -->
+    <!-- Below link is only for checking purposes, hence can be removed
 
-    <div><a href="{% url 'application' %}">Application</a></div>
+    <div><a href="{% url 'applications' %}">Application</a></div>
+-->
 </body>
 
 </html>
